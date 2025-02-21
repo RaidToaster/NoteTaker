@@ -1,8 +1,9 @@
 "use client"
-import { api } from '@/convex/_generated/api'
-import { useUser } from '@clerk/nextjs'
+
+import { UserButton, useUser } from '@clerk/nextjs'
 import { useMutation } from 'convex/react'
 import React, { useEffect } from 'react'
+import { api } from '../convex/_generated/api'
 
 function Home() {
   const { user } = useUser()
@@ -10,11 +11,13 @@ function Home() {
 
   const CheckUser = async () => {
     const result = await createUser({
-      email: user.primaryEmailAddress.emailAddress,
-      imageUrl: user.imageUrl,
-      userName: user.fullName
+      email: user?.primaryEmailAddress?.emailAddress,
+      imageUrl: user?.imageUrl,
+      userName: user?.fullName
 
     })
+
+    console.log(result)
   }
 
   useEffect(() => {
@@ -22,7 +25,10 @@ function Home() {
   }, [user])
 
   return (
-    <div>page</div>
+    <div>
+      page
+      <UserButton />
+    </div>
   )
 }
 
