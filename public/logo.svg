@@ -1,0 +1,26 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="15" fill="#F0F2F5"/> 
+  
+  <!-- Card with shadow -->
+  <g filter="url(#shadow)">
+    <rect x="20" y="15" width="60" height="70" rx="8" fill="white"/>
+  </g>
+  
+  <!-- Content lines -->
+  <path d="M30 38h40" stroke="#E2E8F0" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30 48h35" stroke="#6366F1" stroke-width="4" stroke-linecap="round"/>
+  <path d="M30 58h25" stroke="#CBD5E1" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Status indicator -->
+  <circle cx="70" cy="25" r="8" fill="#6366F1" stroke="white" stroke-width="2"/>
+  <path d="M67 24l2.5 3.5 4-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Subtle decoration -->
+  <path d="M40 75a10 10 0 1 1 20 0" stroke="#6366F1" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+  
+  <defs>
+    <filter id="shadow" x="16" y="11" width="68" height="78" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#64748B" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+</svg>
