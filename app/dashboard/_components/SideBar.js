@@ -15,7 +15,7 @@ function SideBar() {
 
             <div className='mt-10'>
                 <UploadPDFDialog>
-                    <Button className='w-full'>+ Upload PDF</Button>
+                    
                 </UploadPDFDialog>
 
                 <div className='flex gap-2 items center p-3 mt-5 hover:bg-slate-100 rounded-lg cursor-pointer'>

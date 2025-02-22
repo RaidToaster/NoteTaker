@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
-const pdfUrl = 'https://frugal-wolf-416.convex.cloud/api/storage/ef3645ea-5d87-4cc5-b8ef-4971646fd24c'
 export async function GET(req) {
 
+    const reqUrl = req.url
+    const { searchParams } = new URL(reqUrl)
+    const pdfUrl = searchParams.get('pdfUrl')
+    console.log(pdfUrl)
     // LOAD PDF FILE
     const response = await fetch(pdfUrl)
     const data = await response.blob()

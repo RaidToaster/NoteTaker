@@ -24,6 +24,7 @@ function UploadPDFDialog({ children }) {
     const getFileUrl = useMutation(api.fileStorage.getFileUrl)
     const embeddDocument = useAction(api.myAction.ingest)
     const { user } = useUser()
+    const [open, setOpen] = useState(false)
     const [file, setFile] = useState()
     const [loading, setLoading] = useState(false)
     const [fileName, setFileName] = useState('')
@@ -34,38 +35,41 @@ function UploadPDFDialog({ children }) {
         setLoading(true)
 
         // Step 1: Get a short-lived upload URL
-        // const postUrl = await generateUploadUrl();
+        const postUrl = await generateUploadUrl();
 
-        // // Step 2: POST the file to the URL
-        // const result = await fetch(postUrl, {
-        //     method: "POST",
-        //     headers: { "Content-Type": file?.type },
-        //     body: file,
-        // });
-        // const { storageId } = await result.json();
-        // console.log('StorageId', storageId)
+        // Step 2: POST the file to the URL
+        const result = await fetch(postUrl, {
+            method: "POST",
+            headers: { "Content-Type": file?.type },
+            body: file,
+        });
+        const { storageId } = await result.json();
+        console.log('StorageId', storageId)
 
-        // const fileId = uuid4()
-        // const fileUrl = await getFileUrl({ storageId: storageId })
+        const fileId = uuid4()
+        const fileUrl = await getFileUrl({ storageId: storageId })
 
-        // const response = await insertFileEntry({
-        //     fileId: fileId,
-        //     storageId: storageId,
-        //     fileName: fileName ?? 'Untitled File',
-        //     fileUrl: fileUrl,
-        //     createdBy: user.primaryEmailAddress.emailAddress
-        // })
-
+        const response = await insertFileEntry({
+            fileId: fileId,
+            storageId: storageId,
+            fileName: fileName ?? 'Untitled File',
+            fileUrl: fileUrl,
+            createdBy: user.primaryEmailAddress.emailAddress
+        })
         // CALL TO FETCH PDF PROCESS DATA
-        const APIresponse = await axios.get('/api/pdf-loader')
+        const APIresponse = await axios.get('/api/pdf-loader?pdfUrl=' + fileUrl)
         console.log(APIresponse.data.result)
-        embeddDocument({})
+        const embeddResult = embeddDocument({
+            splitText: APIresponse.data.result,
+            fileId: fileId
+        })
         setLoading(false)
+        setOpen(false)
     }
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>{children}</DialogTrigger>
+        <Dialog open={open}>
+            <DialogTrigger asChild><Button onClick={() => setOpen(true)} className='w-full'>+ Upload PDF</Button></DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Upload your PDF</DialogTitle>
@@ -80,11 +84,15 @@ function UploadPDFDialog({ children }) {
                                 <Input placeholder='File Name' onChange={(e) => setFileName(e.target.value)} />
                             </div>
                             <div className='flex justify-end mt-5'>
-                                <Button onClick={OnUpload}>
+                                <Button onClick={() => setOpen(false)} className='mr-2 bg-red-600 hover:bg-red-400'>
+                                    Cancel
+                                </Button>
+                                <Button onClick={OnUpload} disabled={loading}>
                                     {
                                         loading ? <Loader2Icon className='animate-spin' /> : 'Upload'
                                     }
                                 </Button>
+
                             </div>
                         </div>
                     </DialogDescription>
