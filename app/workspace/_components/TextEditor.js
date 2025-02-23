@@ -19,6 +19,17 @@ function TextEditor() {
         console.log(selectedText)
         console.log("params file id", fileId)
         const result = await SearchAI({ query: selectedText, fileId: fileId })
+
+        const UnformattedAns = JSON.parse(result)
+        let AllUnformatedAns = '';
+        UnformattedAns && UnformattedAns.forEach(element => {
+            AllUnformatedAns = AllUnformatedAns + element.pageContent
+        });
+
+        const PROMPT = "For question: " + selectedText + "and with the given content as an answer, " +
+            "please give appropiate answer in HTML format. The answer content is: " + AllUnformatedAns;
+
+
         console.log('unformatted answer', result)
     }
 
