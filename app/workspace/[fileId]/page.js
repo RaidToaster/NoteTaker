@@ -13,7 +13,7 @@ function Workspace() {
 
     useEffect(
         () => {
-            console.log('File Info: ', fileInfo)
+            // console.log('File Info: ', fileInfo)
         }, [fileInfo])
     return (
         <div>

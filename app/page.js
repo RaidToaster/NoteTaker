@@ -22,7 +22,7 @@ function Home() {
 
     })
 
-    console.log(result)
+    // console.log(result)
   }
 
   const timer = setTimeout(() => {

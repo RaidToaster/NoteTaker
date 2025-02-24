@@ -25,8 +25,8 @@ function TextEditor() {
             editor.state.selection.to,
             ' '
         )
-        console.log(selectedText)
-        console.log("params file id", fileId)
+        // console.log(selectedText)
+        // console.log("params file id", fileId)
         const result = await SearchAI({ query: selectedText, fileId: fileId })
 
         const UnformattedAns = JSON.parse(result)
@@ -35,14 +35,14 @@ function TextEditor() {
             AllUnformatedAns = AllUnformatedAns + element.pageContent
         });
 
-        console.log('unformatted answer', result)
+        // console.log('unformatted answer', result)
 
         const PROMPT = "For question: " + selectedText + "and with the given content as an answer, " +
             "please give appropiate answer in HTML format. The answer content is: " + AllUnformatedAns
 
 
         const AiModelResult = await chatSession.sendMessage(PROMPT)
-        console.log(AiModelResult.response.text())
+        // console.log(AiModelResult.response.text())
         const finalAnswer = AiModelResult.response.text().replace('```', '').replace('html', '').replace('```', '')
 
         const allText = editor.getHTML()
