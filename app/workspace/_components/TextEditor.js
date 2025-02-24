@@ -1,3 +1,4 @@
+import { chatSession } from '@/configs/AIModel'
 import { api } from '@/convex/_generated/api'
 import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/react'
@@ -26,11 +27,18 @@ function TextEditor() {
             AllUnformatedAns = AllUnformatedAns + element.pageContent
         });
 
-        const PROMPT = "For question: " + selectedText + "and with the given content as an answer, " +
-            "please give appropiate answer in HTML format. The answer content is: " + AllUnformatedAns;
-
-
         console.log('unformatted answer', result)
+
+        const PROMPT = "For question: " + selectedText + "and with the given content as an answer, " +
+            "please give appropiate answer in HTML format. The answer content is: " + AllUnformatedAns
+
+
+        const AiModelResult = await chatSession.sendMessage(PROMPT)
+        console.log(AiModelResult.response.text())
+        const finalAnswer = AiModelResult.response.text().replace('```', '').replace('html', '').replace('```', '')
+
+        const allText = editor.getHTML()
+        editor.commands.setContent(allText + '<p> <strong>Answer:</strong> </p>' + finalAnswer)
     }
 
     const editor = useEditor({
@@ -84,7 +92,9 @@ function TextEditor() {
                 </div>
             </div>
             <div>
-                <EditorContent editor={editor} />
+                <div className='overflow-scroll h-[75vh]'>
+                    <EditorContent editor={editor} />
+                </div>
             </div>
         </div>
     )

@@ -34,37 +34,40 @@ function UploadPDFDialog({ children }) {
     const OnUpload = async () => {
         setLoading(true)
 
-        // Step 1: Get a short-lived upload URL
-        const postUrl = await generateUploadUrl();
+        try {
+            const postUrl = await generateUploadUrl()
+            const result = await fetch(postUrl, {
+                method: "POST",
+                headers: { "Content-Type": file?.type },
+                body: file,
+            })
 
-        // Step 2: POST the file to the URL
-        const result = await fetch(postUrl, {
-            method: "POST",
-            headers: { "Content-Type": file?.type },
-            body: file,
-        });
-        const { storageId } = await result.json();
-        console.log('StorageId', storageId)
+            const { storageId } = await result.json()
+            const fileId = uuid4()
+            const fileUrl = await getFileUrl({ storageId })
 
-        const fileId = uuid4()
-        const fileUrl = await getFileUrl({ storageId: storageId })
+            await insertFileEntry({
+                fileId,
+                storageId,
+                fileName: fileName || 'Untitled File',
+                fileUrl,
+                createdBy: user.primaryEmailAddress.emailAddress
+            })
 
-        const response = await insertFileEntry({
-            fileId: fileId,
-            storageId: storageId,
-            fileName: fileName ?? 'Untitled File',
-            fileUrl: fileUrl,
-            createdBy: user.primaryEmailAddress.emailAddress
-        })
-        // CALL TO FETCH PDF PROCESS DATA
-        const APIresponse = await axios.get('/api/pdf-loader?pdfUrl=' + fileUrl)
-        console.log(APIresponse.data.result)
-        const embeddResult = embeddDocument({
-            splitText: APIresponse.data.result,
-            fileId: fileId
-        })
-        setLoading(false)
-        setOpen(false)
+            const APIresponse = await axios.get('/api/pdf-loader?pdfUrl=' + fileUrl)
+
+            await embeddDocument({
+                splitText: APIresponse.data.result,
+                fileId: fileId
+            })
+
+        } catch (error) {
+            console.error("Upload failed:", error)
+            alert(`Upload failed: ${error.message}`)
+        } finally {
+            setLoading(false)
+            setOpen(false)
+        }
     }
 
     return (

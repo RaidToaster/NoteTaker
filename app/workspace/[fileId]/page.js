@@ -26,7 +26,7 @@ function Workspace() {
                 </div>
 
                 {/* ini pdf */}
-                <div>
+                <div className='overflow-scroll h-[84vh]'>
                     <PdfViewer fileUrl={fileInfo?.fileUrl} />
                 </div>
             </div>

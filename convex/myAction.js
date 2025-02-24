@@ -10,9 +10,13 @@ export const ingest = action({
         fileId: v.string(),
     },
     handler: async (ctx, args) => {
+
+        const metadataArray = args.splitText.map(() => ({
+            fileId: args.fileId
+        }));
         await ConvexVectorStore.fromTexts(
             args.splitText,
-            [{ fileId: args.fileId }],
+            metadataArray,
             new GoogleGenerativeAIEmbeddings({
                 apiKey: process.env.GOOGLE_API_KEY,
                 model: "text-embedding-004", // 768 dimensions

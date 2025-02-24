@@ -21,8 +21,8 @@ export async function GET(req) {
 
     // SPLIT JADI KECIL
     const splitter = new RecursiveCharacterTextSplitter({
-        chunkSize: 100,
-        chunkOverlap: 20,
+        chunkSize: 200,
+        chunkOverlap: 40,
     });
 
     const output = await splitter.createDocuments([pdfTextContent])
