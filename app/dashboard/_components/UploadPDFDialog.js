@@ -18,7 +18,7 @@ import { useUser } from '@clerk/nextjs'
 import axios from 'axios'
 
 
-function UploadPDFDialog({ children }) {
+function UploadPDFDialog({ children, isMaxFile }) {
     const generateUploadUrl = useMutation(api.fileStorage.generateUploadUrl)
     const insertFileEntry = useMutation(api.fileStorage.AddFileEntrytoDb)
     const getFileUrl = useMutation(api.fileStorage.getFileUrl)
@@ -72,7 +72,7 @@ function UploadPDFDialog({ children }) {
 
     return (
         <Dialog open={open}>
-            <DialogTrigger asChild><Button onClick={() => setOpen(true)} className='w-full'>+ Upload PDF</Button></DialogTrigger>
+            <DialogTrigger asChild><Button onClick={() => setOpen(true)} disabled={isMaxFile} className='w-full'>+ Upload PDF</Button></DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Upload your PDF</DialogTitle>

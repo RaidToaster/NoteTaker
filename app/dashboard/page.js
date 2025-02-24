@@ -3,6 +3,7 @@ import { api } from '@/convex/_generated/api'
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 function Dashboard() {
@@ -14,14 +15,24 @@ function Dashboard() {
 
     return (
         <div>
-            <h2 className='font-medium text-3xl'>Workspace</h2>
-            <div>
-                {fileList && fileList?.map((file, index) => (
-                    <div key={index}>
-                        <Image src={'/pdf-file.png'} alt='file' width={70} height={70}></Image>
+            <h2 className='font-bold text-primary text-3xl'>Workspace</h2>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-10'>
+                {fileList?.length > 0 ? fileList?.map((file, index) => (
+                    <Link key={index} href={'/workspace/' + file.fileId}>
+                        <div key={index} className='flex w-fit p-5 shadow-md flex-col rounded-md font-semibold
+                            gap-1 items-center justify-center cursor-pointer border hover:scale-105 transition-all'>
+                            <Image src={'/pdf-file.png'} alt='file' width={70} height={70}></Image>
+                            <h2>{file?.fileName}</h2>
+                            <h2>{new Date(file?._creationTime).toLocaleString()}</h2>
+                        </div>
+                    </Link>
+                )) : [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+                    <div key={index} className='bg-slate-200 rounded-md h-[150px] animate-pulse'>
+
                     </div>
                 ))}
             </div>
+            
         </div>
     )
 }

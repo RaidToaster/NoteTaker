@@ -51,6 +51,10 @@ export const GetUserFiles = query({
         userEmail: v.string()
     },
     handler: async (ctx, args) => {
+        //if no useremail langsung return
+        if (!args?.userEmail) {
+
+        }
         const result = await ctx.db.query('pdfFiles')
             .filter((q) => q.eq(q.field('createdBy'), args.userEmail)).collect();
 
