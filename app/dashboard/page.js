@@ -1,6 +1,6 @@
 "use client"
 import { api } from '@/convex/_generated/api'
-import { useUser } from '@clerk/nextjs'
+import { RedirectToSignIn, useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,7 +12,7 @@ function Dashboard() {
     if (!user) {
         return (
             <div className="col-span-full row-span-full text-2xl text-center text-gray-500">
-                Please sign in to view your workspace.
+                <RedirectToSignIn/>
             </div>
         );
     }
