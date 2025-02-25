@@ -10,12 +10,12 @@ function Dashboard() {
     const { user, isLoaded, isSignedIn } = useUser()
     const { signOut } = useClerk()
 
-    const fileList = useQuery(api.fileStorage.GetUserFiles,
-        isLoaded && user?.primaryEmailAddress?.emailAddress
-            ? { userEmail: user.primaryEmailAddress.emailAddress }
-            : 'skip' // Or pass undefined to skip the query
-    )
+    const email = isSignedIn && isLoaded ? user?.primaryEmailAddress?.emailAddress : null;
 
+    const fileList = useQuery(
+        api.fileStorage.GetUserFiles,
+        email ? { userEmail: email } : undefined
+    );
     // const handleSignOut = async () => {
     //     await signOut().then(() => window.location.href = '/');
     // }
