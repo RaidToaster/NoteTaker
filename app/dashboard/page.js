@@ -9,6 +9,15 @@ import React from 'react'
 function Dashboard() {
     const { user } = useUser()
 
+    if (!user) {
+        return (
+            <div className="col-span-full row-span-full text-2xl text-center text-gray-500">
+                Please sign in to view your workspace.
+            </div>
+        );
+    }
+
+
     const fileList = useQuery(api.fileStorage.GetUserFiles, {
         userEmail: user?.primaryEmailAddress?.emailAddress
     })
