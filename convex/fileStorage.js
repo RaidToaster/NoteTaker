@@ -47,9 +47,9 @@ export const GetFileRecord = query({
 })
 
 export const GetUserFiles = query({
-    args: {
-        userEmail: v.string()
-    },
+    // args: {
+    //     userEmail: v.string()
+    // },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity()
 
@@ -57,12 +57,12 @@ export const GetUserFiles = query({
             return []; // Return empty array instead of throwing error
         }
         //if no useremail langsung return
-        if (!args?.userEmail) {
-            console.error('No userEmail provided');
-            throw new Error('No userEmail provided');
-        }
+        // if (!args?.userEmail) {
+        //     console.error('No userEmail provided');
+        //     throw new Error('No userEmail provided');
+        // }
         const result = await ctx.db.query('pdfFiles')
-            .filter((q) => q.eq(q.field('createdBy'), args.userEmail)).collect();
+            .filter((q) => q.eq(q.field('createdBy'), identity.email)).collect();
 
         return result;
     }

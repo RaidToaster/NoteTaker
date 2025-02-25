@@ -8,7 +8,7 @@ import React from 'react'
 
 function Dashboard() {
     const { user, isSignedIn } = useUser()
-    const { signOut } = useClerk() 
+    const { signOut } = useClerk()
 
     // const handleSignOut = async () => {
     //     await signOut().then(() => window.location.href = '/');
@@ -21,15 +21,13 @@ function Dashboard() {
     // if (!user) {
     //     return (
     //         <div className="col-span-full row-span-full text-2xl text-center text-gray-500">
-                
+
     //         </div>
     //     );
     // }
 
 
-    const fileList = useQuery(api.fileStorage.GetUserFiles, {
-        userEmail: user?.primaryEmailAddress?.emailAddress
-    })
+    const fileList = useQuery(api.fileStorage.GetUserFiles)
 
     return (
         <div>
