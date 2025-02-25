@@ -1,21 +1,30 @@
 "use client"
 import { api } from '@/convex/_generated/api'
-import { RedirectToSignIn, useUser } from '@clerk/nextjs'
+import { RedirectToSignIn, useClerk, useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 function Dashboard() {
-    const { user } = useUser()
+    const { user, isSignedIn } = useUser()
+    const { signOut } = useClerk() 
 
-    if (!user) {
-        return (
-            <div className="col-span-full row-span-full text-2xl text-center text-gray-500">
-                <RedirectToSignIn/>
-            </div>
-        );
+    // const handleSignOut = async () => {
+    //     await signOut().then(() => window.location.href = '/');
+    // }
+
+    if (!isSignedIn) {
+        return null; // Let middleware handle redirection
     }
+
+    // if (!user) {
+    //     return (
+    //         <div className="col-span-full row-span-full text-2xl text-center text-gray-500">
+                
+    //         </div>
+    //     );
+    // }
 
 
     const fileList = useQuery(api.fileStorage.GetUserFiles, {

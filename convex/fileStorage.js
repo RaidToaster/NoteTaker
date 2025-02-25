@@ -51,6 +51,11 @@ export const GetUserFiles = query({
         userEmail: v.string()
     },
     handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity()
+
+        if (!identity) {
+            return []; // Return empty array instead of throwing error
+        }
         //if no useremail langsung return
         if (!args?.userEmail) {
             console.error('No userEmail provided');
