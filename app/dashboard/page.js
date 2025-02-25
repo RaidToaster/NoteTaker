@@ -7,12 +7,14 @@ import Link from 'next/link'
 import React from 'react'
 
 function Dashboard() {
-    const { user, isSignedIn } = useUser()
+    const { user, isLoaded, isSignedIn } = useUser()
     const { signOut } = useClerk()
 
-    const fileList = useQuery(api.fileStorage.GetUserFiles, {
-        userEmail: user?.primaryEmailAddress?.emailAddress
-    })
+    const fileList = useQuery(api.fileStorage.GetUserFiles,
+        isLoaded && user?.primaryEmailAddress?.emailAddress
+            ? { userEmail: user.primaryEmailAddress.emailAddress }
+            : 'skip' // Or pass undefined to skip the query
+    )
 
     // const handleSignOut = async () => {
     //     await signOut().then(() => window.location.href = '/');
