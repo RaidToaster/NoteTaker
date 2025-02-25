@@ -10,6 +10,10 @@ function Dashboard() {
     const { user, isSignedIn } = useUser()
     const { signOut } = useClerk()
 
+    const fileList = useQuery(api.fileStorage.GetUserFiles, {
+        userEmail: user?.primaryEmailAddress?.emailAddress
+    })
+
     // const handleSignOut = async () => {
     //     await signOut().then(() => window.location.href = '/');
     // }
@@ -27,7 +31,6 @@ function Dashboard() {
     // }
 
 
-    const fileList = useQuery(api.fileStorage.GetUserFiles)
 
     return (
         <div>
